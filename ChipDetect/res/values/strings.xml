@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ChipReco</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btn_scan">scan</string>
+    <string name="title_activity_scan">Tag scan</string>
+	<string name="scan_text">Please place the chip tag in center</string>
+	<string name="title_back">back</string>
+	<string name="btn_search">Search</string>
+	<string name="edit_search">Chip ID to search</string>
+	<string name="home_logo">www.eefocus.com</string>
+</resources>

@@ -1,0 +1,39 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.eefocus.chipdetect"
+    android:versionCode="1"
+    android:versionName="1.0" >
+	
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-feature android:name="android.hardware.camera" android:required="false"/>
+	<uses-feature android:name="android.hardware.camera.autofocus"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light" >
+        <activity
+            android:name="com.eefocus.chipdetect.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.eefocus.chipdetect.ScanActivity"
+            android:label="@string/title_activity_scan" 
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:parentActivityName="com.eefocus.chipdetect.MainActivity">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.eefocus.chipdetect.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

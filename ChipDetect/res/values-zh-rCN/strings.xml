@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">与非网</string>
+    <string name="action_settings">设置</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btn_scan">扫一扫！</string>
+    <string name="title_activity_scan">标签扫描</string>
+	<string name="scan_text">请将芯片标签的型号放入扫描框中</string>
+	<string name="title_back">返回</string>
+	<string name="btn_search">搜索</string>
+	<string name="edit_search">输入芯片型号</string>
+	<string name="home_logo">www.eefocus.com</string>
+</resources>
