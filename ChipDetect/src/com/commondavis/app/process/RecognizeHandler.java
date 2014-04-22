@@ -3,6 +3,8 @@
  */
 package com.commondavis.app.process;
 
+import com.commondavis.app.camera.CameraManager;
+import com.commondavis.app.camera.luminance.PlanarYUVLuminanceSource;
 import com.eefocus.chipdetect.R;
 import com.eefocus.chipdetect.ScanActivity;
 
@@ -30,7 +32,7 @@ public class RecognizeHandler extends Handler {
 		}
 		switch(message.what){
 		case R.id.recognize:
-			recognize(null, 0, 0);
+			recognize((byte[])message.obj, message.arg1, message.arg2);
 			break;
 		case R.id.quit:
 			running=false;
@@ -40,6 +42,6 @@ public class RecognizeHandler extends Handler {
 	}
 	
 	private void recognize(byte[] data,int width,int height){
-		
+		PlanarYUVLuminanceSource YUVSource = activity.getCameraManager().buildLuminanceSource(data, width, height);
 	}
 }

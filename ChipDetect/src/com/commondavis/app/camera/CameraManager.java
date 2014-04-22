@@ -3,6 +3,8 @@ package com.commondavis.app.camera;
 
 import java.io.IOException;
 
+import com.commondavis.app.camera.luminance.PlanarYUVLuminanceSource;
+
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -26,7 +28,6 @@ public class CameraManager {
 	private static final int MAX_FRAME_WIDTH = 480;
 	private static final int MAX_FRAME_HEIGHT = 360;
 
-	private static CameraManager cameraManager;
 	static final int SDK_INT; // Later we can use Build.VERSION.SDK_INT
 	static {
 	    int sdkInt;
@@ -60,24 +61,6 @@ public class CameraManager {
 	private final PreviewCallback previewCallback;
 	
 	/**
-	   * Initializes this static object with the Context of the calling Activity.
-	   *
-	   * @param context The Activity which wants to use the camera.
-	   */
-	public static void init(Context context) {
-	    if (cameraManager == null) {
-	      cameraManager = new CameraManager(context);
-	    }
-	}
-	/**
-	   * Gets the CameraManager singleton instance.
-	   *
-	   * @return A reference to the CameraManager singleton.
-	*/
-	public static CameraManager get() {
-	   return cameraManager;
-	}
-	/**
 	   * Checks if the phone supports camera
 	   * @param Context the activity needs to check camera availability
 	* */
@@ -93,7 +76,7 @@ public class CameraManager {
 	   * Constructor
 	   * @param Context the activity needs to check camera availability
 	* **/
-	private CameraManager(Context context) {
+	public CameraManager(Context context) {
 
 		this.context = context;
 	    this.configManager = new CameraConfigurationManager(context);
@@ -300,24 +283,42 @@ public class CameraManager {
 		}
 		return framingRectInPreview;
 	}
-	 public synchronized void setManualFramingRect(int width, int height) {
-		 if (initialized) {
-			 Point screenResolution = configManager.getScreenResolution();
-			 if (width > screenResolution.x) {
-				 width = screenResolution.x;
-			 }
-			 if (height > screenResolution.y) {
-				 height = screenResolution.y;
-			 }
-			 int leftOffset = (screenResolution.x - width) / 2;
-			 int topOffset = (screenResolution.y - height) / 2;
-			 framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-			 Log.d(TAG, "Calculated manual framing rect: " + framingRect);
-			 framingRectInPreview = null;
-		 } else {
-			 requestedFramingRectWidth = width;
-			 requestedFramingRectHeight = height;
-		 }
+	public synchronized void setManualFramingRect(int width, int height) {
+		if (initialized) {
+			Point screenResolution = configManager.getScreenResolution();
+			if (width > screenResolution.x) {
+				width = screenResolution.x;
+			}
+			if (height > screenResolution.y) {
+				height = screenResolution.y;
+			}
+			int leftOffset = (screenResolution.x - width) / 2;
+			int topOffset = (screenResolution.y - height) / 2;
+			framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+			Log.d(TAG, "Calculated manual framing rect: " + framingRect);
+			framingRectInPreview = null;
+		} else {
+			requestedFramingRectWidth = width;
+			requestedFramingRectHeight = height;
+		}
 	 }
+	/**
+	   * A factory method to build the appropriate LuminanceSource object based on the format
+	   * of the preview buffers, as described by Camera.Parameters.
+	   *
+	   * @param data A preview frame.
+	   * @param width The width of the image.
+	   * @param height The height of the image.
+	   * @return A PlanarYUVLuminanceSource instance.
+	   */
+	  public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
+	    Rect rect = getFramingRectInPreview();
+	    if (rect == null) {
+	      return null;
+	    }
+	    // Go ahead and assume it's YUV rather than die.
+	    return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
+	                                        rect.width(), rect.height(), false);
+	  }
 	
 }

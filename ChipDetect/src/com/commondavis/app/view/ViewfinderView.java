@@ -97,7 +97,7 @@ public final class ViewfinderView extends View {
 	private final int maskColor;
 
 	boolean isFirst;
-	
+	private CameraManager cameraManager;
 	public ViewfinderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
@@ -109,12 +109,14 @@ public final class ViewfinderView extends View {
 		Resources resources = getResources();
 		maskColor = resources.getColor(R.color.viewfinder_mask);
 	}
-
+	public void setCameraManager(CameraManager cameraManager){
+		this.cameraManager = cameraManager;
+	}
 	@SuppressLint("DrawAllocation")
 	@Override
 	public void onDraw(Canvas canvas) {
 		//中间的扫描框，你要修改扫描框的大小，去CameraManager里面修改
-		Rect frame = CameraManager.get().getFramingRect();
+		Rect frame = cameraManager.getFramingRect();
 		if (frame == null) {
 			return;
 		}
